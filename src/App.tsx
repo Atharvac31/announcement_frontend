@@ -9,7 +9,7 @@ const App = () => {
 
   const fetchAnnouncements = async () => {
     try {
-      const res = await fetch('http://localhost:8000/announcement');
+      const res = await fetch('https://announcement-backend.onrender.com/announcement');
       if (res.ok) {
         const data = await res.json();
         setAnnouncements(data);
@@ -25,7 +25,7 @@ const App = () => {
     e.preventDefault();
     setMessage('');
     try {
-      const res = await fetch('http://localhost:8000/announcement', {
+      const res = await fetch('https://announcement-backend.onrender.com/announcement', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ title, description }),
@@ -46,7 +46,7 @@ const App = () => {
   const handleStatusChange = async (id: string, currentStatus: string) => {
     const newStatus = currentStatus === 'active' ? 'closed' : 'active';
     try {
-      const res = await fetch(`http://localhost:8000/announcement/${id}`, {
+      const res = await fetch(`https://announcement-backend.onrender.com/announcement/${id}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ status: newStatus }),
