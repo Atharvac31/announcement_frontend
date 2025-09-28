@@ -47,7 +47,7 @@ const App = () => {
   // --- Data Fetching ---
   const fetchAnnouncements = useCallback(async () => {
     try {
-      const res = await fetch('http://localhost:8000/announcement');
+      const res = await fetch('https://announcement-backend.onrender.com/announcement');
       if (!res.ok) throw new Error('Failed to fetch announcements.');
       const data = await res.json();
       setAnnouncements(data.announcements);
@@ -65,7 +65,7 @@ const App = () => {
   const fetchComments = async (id: string) => {
     setComments([]);
     try {
-      const res = await fetch(`http://localhost:8000/announcement/${id}/comments`);
+      const res = await fetch(`https://announcement-backend.onrender.com/announcement/${id}/comments`);
       if (!res.ok) throw new Error('Failed to fetch comments.');
       const data = await res.json();
       setComments(data);
@@ -84,7 +84,7 @@ const App = () => {
   const handleCreateAnnouncement = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const res = await fetch('http://localhost:8000/announcement', {
+      const res = await fetch('https://announcement-backend.onrender.com/announcement', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ title: newTitle, description: newDescription }),
@@ -109,7 +109,7 @@ const App = () => {
     setCommentText('');
 
     try {
-      const res = await fetch(`http://localhost:8000/announcement/${selectedAnnouncement.id}/comments`, {
+      const res = await fetch(`https://announcement-backend.onrender.com/announcement/${selectedAnnouncement.id}/comments`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ authorName: 'You', text: commentText }),
@@ -128,15 +128,15 @@ const App = () => {
     setComments(prev => prev.filter(c => c.id !== commentId)); // Optimistic removal
 
     try {
-        const res = await fetch(`http://localhost:8000/announcement/${selectedAnnouncement.id}/comments/${commentId}`, {
-            method: 'DELETE',
-        });
-        if (!res.ok) throw new Error('Failed to delete comment');
-        showToast('Comment removed.');
-        await fetchAnnouncements(); // Refresh count on main list
+      const res = await fetch(`https://announcement-backend.onrender.com/announcement/${selectedAnnouncement.id}/comments/${commentId}`, {
+        method: 'DELETE',
+      });
+      if (!res.ok) throw new Error('Failed to delete comment');
+      showToast('Comment removed.');
+      await fetchAnnouncements(); // Refresh count on main list
     } catch (err) {
-        showToast(err instanceof Error ? err.message : 'An unknown error occurred.', 'error');
-        setComments(originalComments); // Rollback on error
+      showToast(err instanceof Error ? err.message : 'An unknown error occurred.', 'error');
+      setComments(originalComments); // Rollback on error
     }
   };
 
@@ -162,7 +162,7 @@ const App = () => {
     );
 
     try {
-      const res = await fetch(`http://localhost:8000/announcement/${id}/reactions`, {
+      const res = await fetch(`https://announcement-backend.onrender.com/announcement/${id}/reactions`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'x-user-id': userId },
         body: JSON.stringify({ type }),
